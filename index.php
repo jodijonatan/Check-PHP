@@ -1,37 +1,43 @@
 <?php
-// Ambil data dari file
-$followers = file('followers.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-$followings = file('followings.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+function ambilUsernames($file) {
+    if (!file_exists($file)) {
+        echo "<p style='color:red;'>File <b>$file</b> tidak ditemukan.</p>";
+        return [];
+    }
 
-// Pastikan data dalam bentuk array unik (kalau ada duplikat)
-$followers = array_unique($followers);
-$followings = array_unique($followings);
+    $html = file_get_contents($file);
+    $usernames = [];
 
-// Siapa yang kamu follow tapi mereka gak follow balik
+    preg_match_all('/https:\/\/www\.instagram\.com\/([a-zA-Z0-9._]+)"/', $html, $hasil);
+
+    if (isset($hasil[1])) {
+        $usernames = array_unique($hasil[1]);
+    }
+
+    return $usernames;
+}
+
+$followers = ambilUsernames('followers_1.html');
+$followings = ambilUsernames('following.html');
+
 $not_following_back = array_diff($followings, $followers);
-
-// Siapa yang follow kamu tapi kamu gak follow balik
 $not_followed_back = array_diff($followers, $followings);
-
-// Mutual
 $mutuals = array_intersect($followers, $followings);
 
-// Tampilkan hasil
-echo "<h2>🔻 Tidak follow kamu balik:</h2><ul>";
-foreach ($not_following_back as $user) {
-    echo "<li>$user</li>";
+function tampilkanList($judul, $data, $ikon = '') {
+    echo "<h2>$ikon $judul (" . count($data) . ")</h2><ul>";
+    foreach ($data as $user) {
+        echo "<li><a href='https://instagram.com/$user' target='_blank'>$user</a></li>";
+    }
+    echo "</ul><hr>";
 }
-echo "</ul>";
 
-echo "<h2>🔺 Kamu tidak follow balik:</h2><ul>";
-foreach ($not_followed_back as $user) {
-    echo "<li>$user</li>";
-}
-echo "</ul>";
+// Tampilan di browser
+echo "<h1>📊 Analisis Followers cold.joo</h1>";
+echo "<p><b>Total Followers:</b> " . count($followers) . "</p>";
+echo "<p><b>Total Following:</b> " . count($followings) . "</p><hr>";
 
-echo "<h2>✅ Saling follow (Mutual):</h2><ul>";
-foreach ($mutuals as $user) {
-    echo "<li>$user</li>";
-}
-echo "</ul>";
+tampilkanList('yang ga follback', $not_following_back, '🔻');
+tampilkanList('ga kamu follback', $not_followed_back, '🔺');
+tampilkanList('saling follow', $mutuals, '✅');
 ?>
