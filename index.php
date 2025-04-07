@@ -42,10 +42,9 @@ function tampilkanList($judul, $data, $ikon = '') {
     echo "</ul><hr>";
 }
 
-// Tampilan di browser
-echo '<h1 class="font-bold text-red-600">📊 Analisis Followers cold.joo</h1>';
-echo "<p><b>Total Followers:</b> " . count($followers) . "</p>";
-echo "<p><b>Total Following:</b> " . count($followings) . "</p><hr>";
+echo "<h1 class='font-bold text-red-600'>📊 Analisis Followers cold.joo</h1>";
+echo "<p class='font-bold'>Total Followers: " . count($followers) . "</p>";
+echo "<p class='font-bold'>Total Following: " . count($followings) . "</p><hr>";
 
 tampilkanList('yang ga follback', $not_following_back, '🔻');
 tampilkanList('ga kamu follback', $not_followed_back, '🔺');
