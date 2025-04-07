@@ -1,7 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Followers Check</title>
+    <link href="/src/index.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
 <?php
 function ambilUsernames($file) {
     if (!file_exists($file)) {
-        echo "<p style='color:red;'>File <b>$file</b> tidak ditemukan.</p>";
+        echo "<p class='color:red;'>File <b>$file</b> tidak ditemukan.</p>";
         return [];
     }
 
@@ -33,7 +43,7 @@ function tampilkanList($judul, $data, $ikon = '') {
 }
 
 // Tampilan di browser
-echo "<h1>📊 Analisis Followers cold.joo</h1>";
+echo '<h1 class="font-bold text-red-600">📊 Analisis Followers cold.joo</h1>';
 echo "<p><b>Total Followers:</b> " . count($followers) . "</p>";
 echo "<p><b>Total Following:</b> " . count($followings) . "</p><hr>";
 
@@ -41,3 +51,6 @@ tampilkanList('yang ga follback', $not_following_back, '🔻');
 tampilkanList('ga kamu follback', $not_followed_back, '🔺');
 tampilkanList('saling follow', $mutuals, '✅');
 ?>
+
+</body>
+</html>
